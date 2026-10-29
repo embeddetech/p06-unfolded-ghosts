@@ -1,0 +1,1229 @@
+﻿\documentclass[11pt]{article}
+
+\usepackage[margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+
+\newcommand{\PT}{\mathcal{PT}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{The conformal point is a phase boundary:\\
+unfolding directions, the sign map of the cascade divisor,\\
+and a two-channel photonic readout}
+\author{Jonathan Torkelson\\[2pt]
+\small Embeddetech, Inc., Tulsa, Oklahoma, USA \quad
+\texttt{jtorkelson@embeddetech.com}}
+\date{July 12, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent The equal-frequency Pais--Uhlenbeck point---the per-mode
+kinematics of conformal gravity---is an exceptional point (EP), and
+this paper treats it as what an exceptional point is: a phase
+boundary. We classify every deformation of the theory by two data:
+the \emph{kind} of unfolding direction (family-parameter detunings
+split the degenerate pair linearly; generic matrix perturbations
+split by Puiseux $\sqrt\epsilon$) and its \emph{phase}, which
+decides oscillatory versus growing dynamics. On this map the
+oscillatory set is the punctured real axis ($\Delta\neq0$) of the family directions (while
+$\omega_2^2$ stays positive) and, the ray $\varphi=0$ (the
+single-entry-model reference direction, resolved to within $O(\epsilon)$) of the
+generic ones---measure zero (in the complex plane) either
+way (the family real axis by the analytic law; the generic ray by
+the exact Puiseux eigenvalues, from which growth with probability
+one follows for any absolutely continuous phase law (unstructured, traceless/phase-only regulators; fully generic noise still gives probability $\to1$, at rate $1-O(\sqrt\epsilon)$ for phase densities bounded near the band)---corroborated by
+random-phase perturbations landing on the
+growing side in $500/500$ draws at $\epsilon=10^{-8}$),
+so any \emph{unstructured} regulator of the pure theory buys the
+growing side. Real-symplectic (structure-preserving) regulators are the
+sole exception---the characteristic polynomial stays even and real, so
+its discriminant sign splits perturbation directions into two
+\emph{open} half-spaces, an oscillatory band and a growing one, and
+which side is bought then has probability strictly between $0$ and $1$
+(developed below). The known deformations take their places: an Einstein term
+unfolds on the real axis (Stelle, oscillatory, dictionary cost
+$2/\delta$); the Donoghue--Menezes loop width tilts the approach ray
+by a fixed angle without imposing a detuning floor on the approach to
+the exceptional line; and the
+Ilhan--Kovner ``ghost-turned tachyon'' blowup of conformal gravity's
+$k=0$ sector is the corner case $\omega\to0$, where the family
+direction itself turns Puiseux---their finite-time singularity sits on
+the corner's imaginary-split unfolding (the $\varphi=\pi$ direction,
+where the detuned $\omega_2^2<0$); their blowup is reproduced here
+with no free parameters, while the map's frozen-mode rate
+$(\sqrt3/2)\gamma_b$ is the rate their equations imply once their
+effective detuning is ingested.
+The boundary is then shown to be readable at the level of the
+theory's stochastic (beable) representation: for cascade
+(triangular) processes we prove the divisor of the process is
+triangular with a per-bond sign law; that within Jordan cascades
+the pure conditional-mass-creation mechanism of the companion paper
+is strictly a property of the minimal block---for Jordan blocks of
+size $k\ge3$ the divisor generator has entries of \emph{both}
+signs, in an exactly alternating pattern given by the Rayleigh sums
+of the zeros of the Bessel function $J_0$. At finite steps a
+dominant-pole argument---asymptotic, with numerically computed
+window edges, below the strength of the theorems---locates
+the divisor's negative windows on Fourier--Bessel
+bands with edges at $(j_{0,n}/j_{0,1})^2$. Real detuning brings
+negativity back at the per-bond first-return length
+$\pi/|\delta_i|$; for splits in the closed upper half-plane the
+recurrence is paced by the \emph{real part} of the split, while
+the negativity-free directions comprise the $+\ii$ ray, the EP,
+and a computed silent cone centered on the $-\ii$ ray whose sharp
+thresholds reach to within ${\approx}15.3^\circ$ of the real
+axis, from below (silent split phases ${\approx}195.3^\circ$--$344.7^\circ$; thresholds
+located to $10^{-3}$ degrees, cone interior sampled, in the text): the
+negativity channel is a spectrometer for the magnitude of the real
+part of the split, with a known silent sector. The divisor's second
+diagnostic---the column-sum (conditional-mass-creation) channel,
+stated relative to the minimal contraction normalization defined
+in the text---fires at every sampled direction (a $5^\circ$ scan
+of the full circle finds no silent phase) and its onset, at known
+$|\delta|$, resolves the growing from the decaying imaginary ray
+(relative growth of the fed level, under the symmetric split
+convention fixed in the text)---a sign the negativity channel
+cannot see; and the $\omega\to0$ corner, being a size-4 Jordan
+block rather than a bond, is negativity-bearing by the $k\ge3$
+theorem at the corner itself and, computationally, at every
+sampled unfolding direction. The two channels together leave no
+sampled direction silent, bond by bond. A two-device photonic
+extension of our measurement proposal (a coupler \emph{at} its EP,
+and a dissipatively-coupled unidirectional pair) would measure the
+mechanism fingerprint and the direction spectroscopy on
+capabilities demonstrated in the platform family, one coupling
+transfer priced into the device error budget. All results are tree-level mode kinematics, stated for
+the minimal cell and its finite stackings.
+\end{abstract}
+
+\newpage
+\begin{quote}
+\small\noindent\textbf{Note on provenance.} This manuscript is an
+experiment in AI-conducted research as much as a physics paper. The
+project began when the author asked the large language model Claude
+Fable~5 (Anthropic): \emph{``Is it not possible that the antilinear
+PT/time-reversal symmetry element could maybe predict indivisible
+non-Markovian processes?''} Everything that followed was performed by
+the model: the research program, the theorems and proofs, the numerical
+experiments, the literature search, and this text. The model was
+repeatedly prompted to attack its own results adversarially and to
+search for prior work. The author, a professional engineer rather than
+a physicist, directed and reviewed the sessions but makes no claim to
+comprehension of the findings, and is circulating the manuscript for
+independent review by professional physicists. Accordingly, nothing
+here should be taken on trust: every theorem is stated with a full
+proof, and every numerical claim is reproducible from the public
+scripts, with one disclosed exception (the Merlin row of
+Sec.~\ref{sec:dictionary}, which is analytic---its arithmetic stated in
+the revised companion; see Code availability); the originating
+conversation,
+project briefing, and full research notebook are preserved in the
+program's hub repository,
+\url{https://github.com/embeddetech/ghosts-program}.
+\end{quote}
+
+%=====================================================================
+\section{Introduction}
+\label{sec:intro}
+
+This is the sixth paper of a program
+that reads quantum dynamics in
+Barandes' currency of indivisible stochastic processes on
+configurations~\cite{Barandes} and asks what becomes of ghost
+sectors there~\cite{indivisible,instantaneous,conditioned,choosing}. The
+conformal-gravity paper~\cite{choosing} established the arena for the present one: the
+equal-frequency Pais--Uhlenbeck (PU) mode pair---the kinematics that
+conformal gravity carries at every spatial momentum---is a Jordan
+block, an exceptional point (EP) of the mode dynamics, and at that
+point no closed stochastic representation of any kind exists, while
+the open, survival-conditioned representation is a one-way cascade
+whose indivisibility enters through a new mechanism (\emph{conditional
+mass creation}: the two-point divisor stays entrywise nonnegative but
+its column sum crosses one, a diagnostic stated relative to the
+minimal contraction normalization made explicit in
+Sec.~\ref{sec:divisor})~\cite{choosing}.
+
+That paper treated the point itself. This paper treats its
+neighborhood, and the organizing claim is the title's: \emph{the
+conformal point is a phase boundary}, and everything in its vicinity
+is classified by how a deformation unfolds the Jordan block. The
+claim has three layers.
+
+\emph{Layer 1: the direction map} (Sec.~\ref{sec:map}). Deformations
+come in two kinds. Physical parameter changes---an Einstein--Hilbert
+term, a loop-induced width---move within the PU \emph{family},
+detuning $\omega_2^2=\omega^2+\Delta$ and splitting the degenerate
+frequencies \emph{linearly} in $|\Delta|$ (the non-generic unfolding
+responsible for the $2/\delta$ dictionary cost computed
+in~\cite{choosing}). Generic \emph{unstructured} perturbations---floating-point
+noise and random regulators that touch
+the matrix rather than the family (a structured real-symplectic lattice
+is the exception treated below, with an open oscillatory band)---split by Puiseux
+$\sqrt\epsilon$~\cite{Kato}. In both kinds the \emph{phase} of the
+perturbation decides the dynamics, with a kind-dependent
+oscillatory set (within an $O(\epsilon)$ neighborhood of the positive-real ray for traceless perturbations;
+the punctured real axis ($\Delta\neq0$), while $\omega_2^2>0$, for the family)
+and growth everywhere else (for net-damping fully generic noise an $O(\sqrt\epsilon)$-wide decaying band intervenes, so growth there holds only with probability $1-O(\sqrt\epsilon)$). The oscillatory set is measure zero in
+the generic directions, and the $\omega\to0$ corner---conformal
+gravity's homogeneous sector---is where even the family direction
+turns Puiseux: the Ilhan--Kovner instability~\cite{IK2014} is
+recovered there, quantitatively, as the corner's imaginary-split
+unfolding.
+
+\emph{Layer 2: the divisor image} (Sec.~\ref{sec:divisor}). The
+program's currency sees the same boundary. For cascade processes we
+prove a per-bond sign law for the two-point divisor and show that
+the sign structure of a deep Jordan cascade's divisor is universal
+Bessel-zero arithmetic: the divisor generator's entries alternate in
+sign with coefficients given exactly by the Rayleigh sums
+$R_p=\sum_n j_{0,n}^{-2p}$, and finite-step negative windows
+converge to Fourier--Bessel bands (a dominant-pole asymptotic,
+below theorem strength). Two corollaries matter
+physically: the mass-creation-pure mechanism of~\cite{choosing}
+is confined to the minimal ($k=2$) Jordan cell---no taller Jordan
+cascade is negativity-free---and a real-detuned cascade's
+divisor develops negativity at the first-return length
+$\pi/|\delta_i|$ per bond, the recurrence for upper-half-plane
+splits being paced by the real part of the split (a cone about
+the $-\ii$ ray is silent for negativity; Sec.~\ref{sec:divisor}).
+The negativity channel alone is therefore a spectrometer for the
+magnitude of the \emph{real} part of the split; its silent set---the
+$+\ii$ ray, the EP, and the cone about the $-\ii$ ray---is
+read out at every sampled phase by the divisor's second, convention-relative
+channel (the column sum, silent at no sampled phase), whose onset resolves the
+sign negativity cannot see, and the
+$\omega\to0$ corner---a size-4 block---is negativity-bearing by
+the $k\ge3$ theorem before any unfolding is chosen
+(Sec.~\ref{sec:divisor}): a two-channel direction readout.
+
+\emph{Layer 3: the readout} (Sec.~\ref{sec:photonic}). Both the
+mechanism fingerprint and the direction spectroscopy are measurable
+with classical light on the femtosecond-laser-written waveguide
+platform of Klauck et al.~\cite{Klauck2019}, via a two-device
+extension of our standing proposal: a coupler operated exactly at
+its EP, and a dissipatively-coupled pair at the unidirectional point
+that realizes the PU cascade cell in the guide basis.
+
+Throughout, the honest scope is the one inherited
+from~\cite{choosing}: these are tree-level statements about mode
+kinematics, proved for the minimal cell and finite stackings, with
+the interacting field theory entering only through the
+deformation dictionary (Sec.~\ref{sec:dictionary}).
+
+%=====================================================================
+\section{The direction map}
+\label{sec:map}
+
+Write the mode pair in its normal form. At the conformal point the
+one-particle matrix of a mode is similar to the $2\times2$ Jordan
+cell $J=\omega\mathbf 1+N$, $N_{12}=1$. A deformation acts either
+\emph{within the PU family}---the physical parameters
+$(\omega_1^2,\omega_2^2)$ move, $\omega_2^2=\omega^2+\Delta$ with
+$\Delta=|\Delta|\ee^{\ii\varphi}$---or \emph{generically}, as a
+matrix perturbation, modeled by the block entry
+$H=\bigl(\begin{smallmatrix}\omega&1\\ \epsilon\ee^{\ii\varphi}&
+\omega\end{smallmatrix}\bigr)$.
+
+\paragraph{Family direction: linear split.} The eigenfrequencies of
+the detuned pair are $\omega$ and
+$\sqrt{\omega^2+\Delta}\simeq\omega+\Delta/2\omega$: the split is
+linear in $|\Delta|$ (the family direction is a non-generic
+unfolding; this is why the dictionary cost of~\cite{choosing}
+scales as $2/\delta$ rather than $2/\sqrt\delta$, re-verified below).
+The growth rate is
+\begin{equation}
+\lambda_{\rm fam}(\Delta)=\bigl|\mathrm{Im}\sqrt{\omega^2+\Delta}
+\bigr|\;\simeq\;\frac{|\Delta|\,|\sin\varphi|}{2\omega},
+\label{eq:famlaw}
+\end{equation}
+verified on the $4\times4$ PU companion matrix at
+$|\Delta|=10^{-3},10^{-2},10^{-1}$, $\varphi\in\{0,\pi/6,\pi/2,
+5\pi/6,\pi\}$---the lower half-plane follows by conjugation
+symmetry, $\lambda(\bar\Delta)=\lambda(\Delta)$ (worst relative
+deviation $4.6\times10^{-2}$ over the nonzero-growth phases,
+dominated by
+the $|\Delta|=10^{-1}$ curvature; Eq.~\eqref{eq:famlaw} is the
+$|\Delta|\to0$ law). Two features deserve emphasis. First, the
+oscillatory set of the family direction is the punctured \emph{real
+axis} of $\Delta$ ($\Delta\neq0$, both signs), so long as $\omega_2^2>0$: at
+$\varphi=0$ and $\varphi=\pi$ the computed growth is
+$\lesssim10^{-13}$. Second, on the real axis the EP approach carries
+the known cost: the eigenvector-matrix condition number obeys
+$\mathrm{cond}(S)\,\delta/2=1.008$ and $1.001$ at
+$\delta=5\times10^{-3},\,5\times10^{-4}$---the $2.00/\delta$ law
+of~\cite{choosing}, recovered here as the boundary-line toll.
+
+\paragraph{Generic direction: Puiseux split.} The perturbed block
+has eigenvalues $\omega\pm\sqrt{\epsilon}\,\ee^{\ii\varphi/2}$, so
+\begin{equation}
+\lambda_{\rm gen}(\epsilon)=\sqrt{\epsilon}\,\bigl|\sin(\varphi/2)
+\bigr|,
+\label{eq:genlaw}
+\end{equation}
+verified to $1.2\times10^{-13}$ across the grid, with the fitted
+Puiseux exponent $0.5000$. Here the oscillatory set is the single
+ray $\varphi=0$ of this single-entry model (a fully generic matrix
+perturbation adds a common $O(\epsilon)$ growth $\tfrac12\epsilon\,
+\mathrm{Im}\,\mathrm{tr}\,P$, absent here where $\mathrm{tr}\,P=0$; the
+oscillatory locus is instead displaced from this ray by only $O(\epsilon)$
+through the sub-leading discriminant correction (and is empty once $\mathrm{Im}\,\mathrm{tr}\,P\neq0$, its role taken by the
+growing/decaying split below) and, being contained in the zero set of a single real-analytic
+condition (the imaginary part of the discriminant, not identically
+vanishing in the phase), is measure zero a fortiori): a random-phase perturbation at $\epsilon=10^{-8}$
+landed on the growing side in $500$ of $500$ draws, with median
+rate $\sim\sqrt\epsilon$. \emph{The pure theory is the boundary}
+is thus an analytic statement---growth with probability one for
+any absolutely continuous phase law, from the exact Puiseux
+eigenvalues---corroborated by sampling: an \emph{unstructured} regulator
+that perturbs the block with a continuously-distributed phase
+(floating-point roundoff, modeled as an effectively random phase over inputs,
+being the representative case) buys the growing
+side with probability one, at the Puiseux-enhanced rate $\sqrt\epsilon$;
+a fully generic (non-traceless) perturbation instead opens, when the common
+term damps ($\mathrm{Im}\,\mathrm{tr}\,P<0$), a decaying band of
+angular width $O(\sqrt\epsilon)$ through the common
+$\tfrac12\epsilon\,\mathrm{Im}\,\mathrm{tr}\,P$ term, so there the growing
+side has probability $\to1$ as $\epsilon\to0$ (at rate $1-O(\sqrt\epsilon)$ for
+phase densities bounded near the band).
+Structured regulators are a different matter: a real-symplectic lattice
+discretization sits at a defective $1{:}1$ resonance, whose Hamiltonian
+unfoldings keep an open set of directions oscillatory (a property of the
+real-symplectic unfolding, not of a Krein signature---undefined at the
+defective point~\cite{KreinTheory}), so there, for any direction law with full
+support, the growing side has probability
+strictly between zero and one (an open band of oscillatory directions
+survives); and a deterministic truncation lands at one definite
+phase, for which ``probability one'' is not the right
+description.
+
+\paragraph{The $\omega\to0$ corner.} Conformal gravity's
+translationally-invariant ($k=0$) sector sits at the doubly
+degenerate corner $\omega_1=\omega_2=0$, with secular solution set
+$\{1,t,t^2,t^3\}$. There the family direction itself becomes
+Puiseux: the induced frequencies are $\pm\sqrt{\Delta}$, so
+$\lambda_{\rm corner}=\sqrt{|\Delta|}\,|\sin(\varphi/2)|$ (verified
+to $6.9\times10^{-16}$). The two phases in play are related by the
+square root: on the finite-frequency line the split is
+$\delta\simeq\Delta/2\omega$ and shares the phase of $\Delta$,
+while at the corner $\delta=\sqrt\Delta$ \emph{halves} it---which
+is how a $\varphi=\pi$ family deformation, real in $\Delta$,
+arrives as a purely imaginary frequency split (the $+\ii$ ray of
+Sec.~\ref{sec:divisor}'s split-phase classification, on the
+principal branch; the corner block itself sits outside the
+bond-level classification, as Sec.~\ref{sec:divisor} shows). This corner
+is where the Ilhan--Kovner result lives. In~\cite{IK2014} the nonlinear
+self-interaction of conformal gravity's $k=0$ sector generates, for
+a background amplitude $\gamma_b$, an effective potential whose
+sign relative to the ghost kinetic term is anti-restoring: in our
+variables, $\Delta_{\rm eff}=-\tfrac34\gamma_b^2$, the
+$\varphi=\pi$ ray. With their $\Delta_{\rm eff}$ ingested, the map
+returns growth at
+$\sqrt{3/4}\,\gamma_b\cdot|\sin(\pi/2)|=(\sqrt3/2)\gamma_b$---algebra
+once $\Delta_{\rm eff}$ is given, not an independent
+prediction---and the frozen-mode eigenvalue check confirms rates
+$0.433013/0.866025/1.732051$ at $\gamma_b=0.5/1/2$, matching
+$(\sqrt3/2)\gamma_b$ to the six digits shown. The parameter-free
+corroboration is separate: direct integration of their
+\emph{nonlinear} equations of motion (public script, block~[3b])
+reproduces their exact solution, Eq.~(58) of~\cite{IK2014}, to
+relative $5\times10^{-12}$ and the singularity time
+$t_{\rm sing}=2^{3/2}/\gamma_0$ ($\gamma_0$ their initial amplitude) to
+relative $\sim10^{-6}$ (five--six significant digits).
+Their ``ghost-turned tachyon'' is the
+imaginary-split unfolding of the conformal corner (a $\varphi=\pi$
+family direction whose frequency split is imaginary because
+$\omega_2^2<0$ there); the reproduction, not the rate, is what
+carries ``no free parameters.''
+
+Three scope guards, which we owe to a careful reading
+of~\cite{IK2014,IK2013}. Their exceptional point is the
+$\omega=0$ corner, not the finite-frequency line: the extension of
+the classification to finite $k$ is ours, not theirs. Their
+detuning is \emph{self-induced} and amplitude-dependent
+($\Delta_{\rm eff}\propto\gamma_b^2$), so the unfolding statement
+is about the interacting background, never about the linear
+spectrum. And the companion paper~\cite{IK2013} exhibits an
+interacting particle--ghost system that remains stable---in our
+language, an interaction that unfolds along the real
+direction---so ``interactions destabilize ghosts'' is not a
+universal; \emph{which way the interaction unfolds the block} is
+the invariant content, and their stable example is a test case the
+classification passes rather than an exception it suffers.
+
+%=====================================================================
+\section{The divisor image}
+\label{sec:divisor}
+
+The companion papers measure dynamics in the beable currency: a
+mode-pair evolution $U(t)$ is read through
+$\Gamma(t)=|U(t)/\sigma_{\max}(t)|^2$ (entrywise moduli of the
+contraction-normalized evolution), and divisibility is interrogated
+through the two-point divisor $M=\Gamma(s+\tau)\,\Gamma(s)^{-1}$.
+The indivisible-process paper~\cite{indivisible} found the broken
+dimer fails sub-stochasticity by an entry going \emph{negative}; the
+conformal-gravity paper~\cite{choosing} found the PU cell fails by the
+column sum crossing one with nonnegativity intact (\emph{conditional
+mass creation}). This section proves
+where each mechanism lives.
+
+\paragraph{Conventions.} Three conventions are inherited
+from~\cite{indivisible,choosing} and restated here, because the
+results below split cleanly by whether they depend on them. The
+\emph{beable basis} is the configuration basis in which the cascade
+Hamiltonian is triangular; processes are read entrywise,
+$\Gamma=|{\cdot}|^2$; and $\sigma_{\max}(t)$ denotes the largest
+singular value of $U(t)$, so that $C(t)=U(t)/\sigma_{\max}(t)$ is
+the \emph{minimal contraction normalization}: a unitary
+(conservative) dilation exists exactly when the normalized evolution
+is a contraction, so $\sigma_{\max}$ is the pointwise-least
+normalization admitting a conservative completion---the unique
+choice that discards no survival probability beyond what the
+dynamics itself loses ($\norm{C(t)}=1$: at every time the
+least-decaying state is not conditioned at all). The two failure
+diagnostics then differ in kind. Divisor entry \emph{signs} are
+invariant under every positive scalar renormalization $c(t)$ of the
+normalization---negativity (M1) is convention-free, as
+Proposition~\ref{prop:signlaw}(ii) records---while divisor
+\emph{column sums} scale by $c^2(s)/c^2(s+\tau)$: the
+column-sum-crossing diagnostic (conditional mass creation, M2) is
+stated relative to the $\sigma_{\max}$ convention, and its
+onset---indeed its occurrence---moves under renormalization. The
+relativity is quantifiable, and quantifying it is what justifies
+the convention: for the unit cell with coupling $\kappa$ the raw
+$|U|^2$ divisor's column sum over the step from $s$ to $T=s+\tau$
+is exactly $1+\kappa^2(T^2-s^2)$, so
+crossing-freedom at the pair $(s,T)$ forces
+$c^2(T)/c^2(s)\ge1+\kappa^2(T^2-s^2)$; telescoping this over a
+refined partition of $[0,t]$ turns the product into the Gaussian, so
+a renormalization avoids the crossing at \emph{all} step pairs only
+if $c^2(t)\ge c^2(0)\,\ee^{\kappa^2t^2}$, and that Gaussian envelope
+does avoid it (the exact column-sum law and the envelope's
+sufficiency verified in \texttt{scripts/p6\_divisor\_gate.py},
+block~[4]; the necessity is the telescoping just given). Divisibility
+can thus be purchased---within positive scalar renormalizations
+$c(t)$---but only by
+conditioning away survival probability at a Gaussian rate against
+polynomially growing dynamics---a conditioning overhead
+$c^2/\sigma_{\max}^2$ that diverges; under the minimal convention,
+in which conditioning means survival and nothing else, the crossing
+is unavoidable. Convention-free content below: the triangularity of
+the process and every divisor sign statement
+(Proposition~\ref{prop:signlaw}, Theorems~\ref{thm:k2}
+and~\ref{thm:rayleigh}). Convention-relative: every mass-creation
+onset ($t_c$, $z_c$).
+
+\paragraph{Notation.} From here on, $\delta$ (with per-bond
+subscripts $\delta_i$, and as the device detuning of
+Sec.~\ref{sec:photonic}) always denotes a \emph{frequency} split,
+as in Sec.~\ref{sec:map}; the symbol $\Delta$ is reserved for
+Sec.~\ref{sec:map}'s family detuning, which lives in $\omega^2$
+($\omega_2^2=\omega^2+\Delta$). On the finite-frequency line
+$\delta\simeq\Delta/2\omega$; at the corner $\delta=\sqrt\Delta$
+halves the phase.
+
+\begin{proposition}[cascade divisor; per-bond sign law]
+\label{prop:signlaw}
+Let $H$ be upper triangular on $d$ configurations (a cascade), and
+let $V(t)=|U(t)|^2$ entrywise, $U(t)=\ee^{-\ii Ht}$. Then for all
+$0<s<s+\tau$: (i) the divisor $M=V(s+\tau)V(s)^{-1}$ is upper
+triangular with strictly positive diagonal
+$M_{ii}=V_{ii}(s{+}\tau)/V_{ii}(s)$; and (ii) for each bond $i$,
+\[
+\operatorname{sign} M_{i,i+1}
+=\operatorname{sign}\bigl[r_i(s+\tau)-r_i(s)\bigr],
+\qquad
+r_i(t)=\frac{|U_{i,i+1}(t)|^2}{|U_{ii}(t)|^2},
+\]
+independently of the $\sigma_{\max}$ normalization.
+\end{proposition}
+
+\begin{proof}
+$U(t)$ is upper triangular, hence so are $V$, $V^{-1}$, and $M$;
+the diagonal of $M$ is the ratio of positive diagonals. For (ii),
+the inverse of an upper-triangular matrix has
+$(V^{-1})_{i,i+1}=-V_{i,i+1}/(V_{ii}V_{i+1,i+1})$, so
+\[
+M_{i,i+1}
+=\frac{V_{i,i+1}(s{+}\tau)}{V_{i+1,i+1}(s)}
+-\frac{V_{ii}(s{+}\tau)\,V_{i,i+1}(s)}{V_{ii}(s)V_{i+1,i+1}(s)}
+=\frac{V_{ii}(s{+}\tau)}{V_{i+1,i+1}(s)}
+\bigl[r_i(s{+}\tau)-r_i(s)\bigr],
+\]
+a positive multiple of the ratio increment. The $\sigma_{\max}$
+normalization multiplies $M$ by a positive scalar.
+\end{proof}
+
+Adversarial check: $1408/1408$ sign agreements over random complex
+triangular families at $d=3,4,5$, with the lower-triangular
+residual exactly zero.
+
+For the detuned $2\times2$ cascade
+$H=\bigl(\begin{smallmatrix}\omega_1&c\\0&\omega_2
+\end{smallmatrix}\bigr)$ the ratio is explicit:
+$r(t)=|c|^2\bigl(2-2\cos\delta t\bigr)/\delta^2$ for real split
+$\delta=\omega_1-\omega_2$ (oscillates: negativity \emph{recurs},
+first onset $s^*=\pi/|\delta|$; computed onset ratios
+$0.9969$--$0.9995$ over $\delta=0.4$--$2.0$, at a $0.02$ divisor
+step with a $0.01$ base-point grid---the detected onset is the
+first grid point past $\pi/|\delta|-\tau/2$);
+$r(t)=|c|^2\bigl(1-\ee^{(g_1-g_2)t}\bigr)^2/(g_1-g_2)^2$ for a
+decay split (monotone: negativity-free at all times, machine
+epsilon); and $r(t)=|c|^2t^2$ at the EP (monotone: the
+mass-creation-pure cell of~\cite{choosing}, onset re-verified at
+$0.48$ at a $0.05$ pair spacing with a $0.01$ base grid; the
+zero-step limit is $0.486$, of which the companion's $\approx0.50$
+was its coarser $0.05$ base grid rounding up---finite-pair
+conventions can shift the detected onset in either direction). The general split $\delta=a+\ii b$ interpolates:
+$r(t)=|c|^2|\ee^{\ii\delta t}-1|^2/|\delta|^2$, whose derivative
+is $\propto\ee^{-bt}\bigl[b\cos at+a\sin at-b\,\ee^{-bt}\bigr]$.
+For $b\ge0$ (splits in the closed upper half-plane) this changes
+sign whenever $a\neq0$, so there the negativity-free directions
+are exactly the $+\ii$ ray and the EP, and \emph{the negativity
+channel reads out the magnitude of the real part of the split}:
+real-direction unfolding brings
+negativity back with first-return time $\pi/|\delta|$, diverging as
+the EP is approached, and a mixed split recurs on the pace of
+$|\mathrm{Re}\,\delta|$ (its sign is a residual ambiguity of the
+negativity channel). For $b<0$ the term $-b\,\ee^{-bt}
+=|b|\ee^{|b|t}$ outgrows the oscillation amplitude
+$\sqrt{a^2+b^2}$ at $t^*=\ln\bigl(\sqrt{a^2+b^2}/|b|\bigr)/|b|$,
+and when $t^*$ precedes the first trough the ratio is, heuristically,
+monotone despite $a\neq0$ (the thresholds below come from numerical
+bisection, not from this sufficient condition): the negativity-free set acquires a
+\emph{silent cone} (interior sampled) centered on the $-\ii$ ray, spanning split
+phases $195.345^\circ$--$344.655^\circ$ (sharp, scale-invariant
+thresholds within $15.345^\circ$ of the real axis (from below); bisection
+to $10^{-3}$ degrees; at the thresholds themselves the derivative
+is tangent to zero, so they are silent). The wedges between the
+real axis and the thresholds are negativity-bearing but
+\emph{transient}: finitely many windows before the growth term
+silences the bond---a single window over the few degrees adjacent
+to the threshold, proliferating toward the real axis, where the
+silencing time $t^*$ diverges (computed, at the sampled wedge
+phases: $1$ window at $190^\circ$ and $193^\circ$, $2$ at
+$188^\circ$---completed totals, scale-invariant---and $4$ within
+$t\le40$ at $|\delta|=0.6$ at $181^\circ$ and $185^\circ$). A wedge direction is thus
+readable only in a finite early epoch, in contrast with the
+indefinitely recurrent upper half-plane.
+Computed over the full circle at
+$|\delta|=0.6$, $t$ on the uniform grid $0.05{:}0.02{:}40$:
+monotone ($0$ decreasing intervals) at $90^\circ$ and at the
+sampled phases
+$210^\circ$--$330^\circ$ (interior to the computed silent cone, whose
+connectedness we read from this sampled grid rather than a dense scan),
+versus several hundred to ${\sim}10^3$ decreasing intervals at the
+sampled phases $0^\circ,30^\circ,60^\circ,120^\circ,150^\circ,
+180^\circ$ ($919$ at $30^\circ/150^\circ$, $953$ at
+$0^\circ/180^\circ$; the near-threshold count at
+$60^\circ/120^\circ$ is tolerance-sensitive in the exponentially
+flattened tail, its implementation-robust strict count being
+$1050$). The negativity channel is
+thus a spectrometer for the magnitude of the real part of the split,
+with a known
+silent sector. In a
+real-detuned bidiagonal chain the readout is per
+bond: each bond $i$ returns at $\pi/|\delta_i|$ (computed ratios
+$0.9982$--$0.9995$, $d=4$).
+
+\paragraph{The second channel, and the corner.} The silent
+directions of the negativity channel are not silent for the
+divisor as a whole. The column-sum diagnostic---conditional mass
+creation, convention-relative in the sense of the conventions
+paragraph---fires at every \emph{sampled} split phase: computed
+onsets
+over the full circle at $|\delta|=0.6$ (a $5^\circ$ grid, $72$
+phases; coupling $1$, pair step
+$0.05$, base grid $0.01$; \texttt{scripts/p6\_m2\_channel.py}) range from
+$0.30$ to $0.68$ with no silent phase found, and on the imaginary
+axis
+the onset is \emph{asymmetric}---$0.68$ on the growing ($+\ii$)
+ray against $0.30$ on the decaying ($-\ii$) ray ($0.58$ vs $0.38$
+at $|\delta|=0.3$; $0.69$ vs $0.30$ at pair step $0.02$)---so the
+second channel, at known $|\delta|$, resolves the sign of the
+\emph{imaginary} part (the $\pm\ii$ ray); both channels are even under $\mathrm{Re}\,\delta\to-\mathrm{Re}\,\delta$,
+so the sign of the \emph{real} part stays invisible to either. With the split assigned
+symmetrically, $\omega_{1,2}=\omega\pm\delta/2$ (as in the scripts;
+the beable process is invariant under a common frequency shift, so
+$\delta$ alone does not fix an absolute assignment), the $+\ii$ ray
+is the direction in which the fed (downstream) level grows relative
+to its source; ``growing/decaying ray'' is shorthand for this
+relative sense. And the flagship corner instability of Sec.~\ref{sec:map}
+never relied on the bond-level statement in the first place: the
+$\omega\to0$ sector is a size-4 Jordan block, not a bond, so
+Theorem~\ref{thm:k2} applies, and its divisor is
+negativity-bearing at depth two for every sufficiently short
+step---by the theorem for the corner block itself, and
+computationally at every sampled unfolding direction. Computed on
+the corner companion matrix (base grid $0.002$), the negativity
+onset sits at the first grid point past the theorem's short-step
+boundary
+$s^*=\tau/(\sqrt3-1)$ ($0.070$ vs $s^*=0.0683$ at $\tau=0.05$;
+$0.028$ vs $0.0273$ at $\tau=0.02$), identically for the pure
+corner, the $\varphi=\pi$ (Ilhan--Kovner) unfolding, and the
+$\varphi=0$ real-split one---and identically, onset $0.070$, at
+all twelve sampled phases of a full unfolding circle at
+$|\Delta|=0.36$---while the column-sum onsets differ by
+direction ($0.800$, $0.906$, $0.728$ respectively at
+$\tau=0.05$).
+The instrument is thus two-channel: negativity reads the real part
+of the split and is silent on the imaginary directions at the bond
+level; the column sum---stated in the minimal convention---fires
+at every sampled direction and resolves the imaginary sign; and
+the deep-block
+corner announces itself through the sign theorem before any
+unfolding is chosen.
+
+Purity, however, is a property of the \emph{minimal Jordan} cell
+only:
+
+\begin{theorem}[mass-creation purity of Jordan cascades is
+$k=2$-only]
+\label{thm:k2}
+For the Jordan block $J_k$, $k\ge3$, at any eigenvalue (a complex
+eigenvalue rescales $V$ by a positive factor, leaving divisor signs
+unchanged), write
+$V(t)=f(t^2N)$ with $f(x)=\sum_m x^m/(m!)^2$ and $N$ the nilpotent.
+The divisor is $h(N)$ with $h(x)=f(T^2x)/f(s^2x)$, $T=s+\tau$, and
+its second-superdiagonal coefficient is
+\[
+h_2=\tfrac14\,(T^2-s^2)(T^2-3s^2)\;<\;0
+\quad\text{for }1<T^2/s^2<3 .
+\]
+In particular every sufficiently short step ($T<\sqrt3\,s$) has a
+negative divisor entry, and the divisor generator satisfies
+$L_{i,i+2}(t)=-t^3$ exactly in the Jordan basis (a fixed positive multiple
+$|c_ic_{i+1}|^2$ of it in a general chain, leaving the sign unchanged): no irreducible Jordan cascade of depth $\ge3$---an
+equal-diagonal, nearest-neighbor bidiagonal chain, the physical object
+throughout---is negativity-free.
+\end{theorem}
+
+\begin{proof}
+$|U_{i,i+m}|^2=t^{2m}/(m!)^2$ for the single block, so
+$V(t)=f(t^2N)$; functions of $N$ commute, giving $h$. A general
+equal-diagonal chain (bonds $c_i$) is a fixed positive-diagonal
+similarity $V=D^{-1}f(t^2N)D$ of the block, multiplying each divisor
+entry by a positive bond factor and leaving every sign invariant. Direct
+expansion of $f(bx)/f(ax)$ to second order gives
+$h_2=b^2/4-ab+3a^2/4=(b-a)(b-3a)/4$ with $a=s^2$, $b=T^2$. For the
+generator, $L=\dot V V^{-1}=2tN\,(f'/f)(t^2N)$ and
+$[f'/f]_1=-\tfrac12$ (or see Theorem~\ref{thm:rayleigh}), so
+$L_{i,i+2}=2t\cdot(-\tfrac12 t^2)=-t^3$.
+\end{proof}
+
+Verified: closed form against direct matrix divisors to
+$5.9\times10^{-13}$; the window boundary located at
+$T=1.73250$ against $\sqrt3=1.73205$ (grid $5\times10^{-4}$); the
+generator entries $2t$ and $-t^3$ to six digits. The conformal-gravity
+paper's statement is untouched---its cell is $k=2$, where the single
+superdiagonal is governed by Proposition~\ref{prop:signlaw} and
+$r=t^2$ is monotone---but stacked sectors do not escape it: the
+$M$-quantum sector of the equal-frequency tower carries a
+\emph{single, irreducible} Jordan block of size $M{+}1$ (the
+sector-tower proposition of~\cite{choosing}, the constructive
+form of Smilga's infinite-order exceptional
+point~\cite{Smilga2014}), so the theorem extends to every sector
+$M\ge2$: the sector shift $d\Gamma(N)$ carries strictly positive weights
+$\sqrt{(\nu+1)(M-\nu)}$ (occupation index $\nu=0,\dots,M{-}1$), so the beable and Jordan bases differ by one fixed,
+$t$-independent positive-diagonal similarity at every $M$~\cite{choosing},
+under which the entrywise divisor signs are invariant: the
+tower cannot present a pure mass-creation
+process---negativity at depth two is a theorem at every sector $M\ge2$, given the
+companion's sector-tower structure, for every sufficiently short step.
+
+The full sign structure is Bessel-zero arithmetic:
+
+\begin{theorem}[Rayleigh sign law for the cascade generator]
+\label{thm:rayleigh}
+For the Jordan cascade of any depth, at any eigenvalue (a complex
+eigenvalue shifts only the diagonal of the generator, cf.\
+Theorem~\ref{thm:k2}), the divisor generator's
+$(m{+}1)$-th-superdiagonal entries are, in the Jordan basis (a positive
+bond factor multiplies them in a general chain, leaving signs unchanged),
+\[
+L_{i,\,i+1+m}(t)\;=\;2\,(-1)^m\,4^{\,m+1}R_{m+1}\,t^{2m+1},
+\qquad
+R_p=\sum_{n\ge1} j_{0,n}^{-2p},
+\]
+where $j_{0,n}$ are the positive zeros of $J_0$ and $R_p$ are
+the classical Rayleigh sums (exact rationals: $R_1=\tfrac14$,
+$R_2=\tfrac1{32}$, $R_3=\tfrac1{192}$,
+$R_4=\tfrac{11}{12288}$, \dots)~\cite{Watson}. The signs
+strictly alternate at every depth and every $t>0$.
+\end{theorem}
+
+\begin{proof}
+$f(x)=\sum_m x^m/(m!)^2=I_0(2\sqrt x)$ is entire of order
+$\tfrac12$ with zeros exactly at $x_n=-j_{0,n}^2/4$, so its
+Hadamard factorization is $f(x)=\prod_n(1+4x/j_{0,n}^2)$ and
+\[
+\frac{f'}{f}(x)=\sum_n\frac{1}{x+j_{0,n}^2/4},
+\]
+a sum of simple poles on the negative axis with unit weights.
+Expanding each term geometrically,
+$[f'/f]_m=(-1)^m4^{m+1}R_{m+1}$, and
+$L=2tN\,(f'/f)(t^2N)$ distributes the coefficients along the
+superdiagonals. Alternation is manifest since $R_p>0$.
+\end{proof}
+
+The exact rational coefficients were confirmed against direct sums
+over $2\times10^5$ Bessel zeros, to $5.1\times10^{-12}$ for
+$R_1$ (whose slowly convergent sum carries an analytic tail
+correction) and $\lesssim3\times10^{-15}$ otherwise. At
+finite steps the same analytic structure governs the windows: the
+poles of the rescaled divisor $f(\rho y)/f(y)$ sit at the $x_n$
+for generic step ratio $\rho=T^2/s^2$ (at the ratios
+$\rho=(j_{0,k}/j_{0,1})^2$ the numerator vanishes at the dominant
+pole $x_1$---precisely the band edges below; cancellations at a
+subdominant $x_n$ occur at $(j_{0,k}/j_{0,n})^2$ and shift only
+subleading terms),
+the residue at $x_1$ carries the factor
+$J_0(j_{0,1}\sqrt\rho)$, and for large depth $m$
+\[
+\operatorname{sign} h_m\to(-1)^m\operatorname{sign}
+J_0\bigl(j_{0,1}\sqrt\rho\bigr),
+\qquad
+h_{m+1}/h_m\to-4/j_{0,1}^2=-0.691660\ldots
+\]
+(computed $-0.6917$ by $m\approx10$ at $\rho=2,6$; slower near the
+band edge at $\rho=14$). The negative windows of
+$h_m(\rho)$ converge to \emph{Fourier--Bessel bands} with edges at
+$(j_{0,n}/j_{0,1})^2=5.269,\,12.949,\,24.042,\ldots$: the even-$m$
+first-window edge marches $3.000\to4.778\to5.261\to5.2689$
+($m=2,4,6,8$) against $5.269$, and the odd-$m$ windows converge
+onto $(5.269,\,12.949)$, reaching $(5.269,\,12.947)$ at $m=11$.
+(The positivity of $h_3$ at every step ratio, which a $2{\times}2$ intuition
+would not predict, is exact:
+$36\,h_3(\rho)=(\rho-1)(\rho^2-8\rho+19)$ (in the rescaled convention;
+the dimensional coefficient carries a further positive $s^6$), and the quadratic factor has
+negative discriminant; the first odd-$m$ window opens at $m=5$,
+inside the band.) These band statements are dominant-pole
+asymptotics checked numerically; they sit below the strength of
+Theorems~\ref{thm:k2} and~\ref{thm:rayleigh} and are to be read at
+that strength. The sign map of a deep \emph{Jordan} cascade's
+divisor thus depends on the depth and the step ratio and on
+nothing else in the physics.
+
+%=====================================================================
+\section{The deformation dictionary}
+\label{sec:dictionary}
+
+The two layers assemble into a dictionary
+(Table~\ref{tab:dictionary}).
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.08\textwidth}>{\raggedright\arraybackslash}p{0.15\textwidth}>{\raggedright\arraybackslash}p{0.40\textwidth}@{}}
+\toprule
+deformation & kind & phase & dynamics / divisor image\\
+\midrule
+Einstein term $m_2^2$ (Stelle~\cite{Stelle1977}) & family &
+$\varphi=0$ &
+oscillatory; cost $2/\delta$; negativity returns at $\pi/|\delta|$\\
+loop width (Merlin~\cite{DonoghueMenezes}) & family &
+$\arctan(\gamma/m_2^2)$ & growth $\gamma/2\omega$ per pair
+(time-dilated; see text)\\
+self-interaction at $k=0$~\cite{IK2014} & corner & $\varphi=\pi$ &
+blowup, rate $(\sqrt3/2)\gamma_b$; size-4 block: negativity by
+Thm~\ref{thm:k2}\\
+non-symplectic lattice / machine noise & generic & random & growing (w.p.\ 1 for unstructured phase-only noise; fully generic $\to1$ (rate $1-O(\sqrt\epsilon)$, bounded phase density); a structured lattice can split real), rate
+$\sqrt\epsilon$\\
+stacked sectors~\cite{Smilga2014} & --- & --- & mixed mechanisms
+(Theorem~\ref{thm:k2})\\
+\bottomrule
+\end{tabular}
+\caption{Deformations of the conformal point, classified by
+unfolding kind and phase, with the process-level image. The
+oscillatory set is the punctured real axis ($\Delta\neq0$) of the family directions (while
+$\omega_2^2$ stays positive) and, the ray $\varphi=0$ (the
+single-entry-model reference direction, resolved to within $O(\epsilon)$) of the
+generic ones---measure zero in the complex plane either way.}
+\label{tab:dictionary}
+\end{table}
+
+Two rows need comment. The \emph{Merlin} row records a result that
+corrects a natural first guess: one might expect the ghost's
+loop-induced width $\gamma$ to impose a detuning floor
+$|\omega_1-\omega_2|\gtrsim\Gamma_M$ (the pole width expressed as a
+frequency, $\Gamma_M=\gamma/m_r$) and so to detune the theory
+off the exceptional line in the deep UV. It does not. The
+Donoghue--Menezes pole shift is Lorentz-invariant in $q^2$
+($M^2=m_r^2+\ii\gamma$)~\cite{DonoghueMenezes}, so at spatial
+momentum $k$ the frequency-space width $\gamma/2E_k$ time-dilates
+at exactly the $1/k$ rate of the real detuning $m_2^2/2k$: both
+components of the complex detuning vanish together, the condition
+number still diverges (suppressed only by the $k$-independent
+factor $[1+(\gamma/m_2^2)^2]^{-1/2}\approx1-2\times10^{-4}$ at
+$\xi=1$, $N_{\rm eff}\approx20$ in the notation of the revised
+\cite{choosing}), and the only change is a fixed
+$\approx1^\circ$ tilt of the approach ray into the complex plane.
+The dressed near-EP is thus of resonance type---one real and one
+complex frequency at every finite $k$---and the saturation a
+fixed-linewidth intuition would predict
+($\mathrm{cond}_{\max}\sim640\pi/\xi^2N_{\rm eff}$) is an artifact
+of freezing the width in frequency. This paragraph's content
+appears in the revised companion~\cite{choosing}; we repeat it
+here because it is the dictionary's only \emph{tilted} family row.
+
+The \emph{stacked sectors} row is Theorem~\ref{thm:k2} speaking,
+with its premise supplied by the companion: the $M$-quantum sector
+of the equal-frequency Fock tower carries a single irreducible
+Jordan block of size $M{+}1$ (the sector-tower proposition
+of~\cite{choosing}; the constructive form of~\cite{Smilga2014}),
+so---the sector similarity being a fixed, $t$-independent positive-diagonal one
+at every $M$~\cite{choosing}, under which entrywise signs are invariant---the
+tower cannot present a pure
+mass-creation process; negativity at depth two is a theorem at every sector
+$M\ge2$ (for every
+sufficiently short step), with generator entry a fixed positive multiple of
+$-t^3$ (exactly $-t^3$ in the Jordan basis). Purity is a property of the
+minimal cell, and of nothing above it.
+
+%=====================================================================
+\section{The photonic readout}
+\label{sec:photonic}
+
+Both layers would be measurable with classical light. The
+program's experimental proposal~\cite{measurable} extracts
+divisibility observables from the intensity transfer matrices
+$\hat\Gamma(z)$ of lossy waveguide couplers on the Klauck
+platform~\cite{Klauck2019}, and fixes the measurement chain and
+error model (fabrication disorder, per-launch calibration, shot
+noise, dark floor) that we adopt unchanged here; of the two devices below,
+D5 (the unidirectional cascade cell) is new, while D4 adds a new guide-basis
+negativity readout to the proposal's existing EP coupler; their error budget
+is stated in full in this section and in the public script.
+
+\emph{D4: the dimer at its own EP} ($\gamma=2\kappa$). A reciprocal
+coupler's Jordan vector at the EP is the superposition
+$(1,-\ii)/\sqrt2$, not a guide, so the guide-basis process is
+\emph{not} a cascade and fails by negativity, with onset
+${\to}\,1/(\kappa\sqrt2)$ (a convention-free negativity onset, not
+the mass-creation $t_c$ of the conventions paragraph), the
+continuous EP limit of the
+broken-phase onset formula (at $\kappa=0.30$\,cm$^{-1}$: simulated
+onset $2.15$\,cm at the $0.25$\,cm divisor step, against the
+formula's $2.36$\,cm---the ${\sim}0.2$\,cm shortfall tracking the finite
+divisor-step discretization, of which the half-step $\tau/2$ anchor used for
+D5 accounts for about half).
+
+\emph{D5: the cascade cell in glass.} Realizing the PU cell in the
+beable (guide) basis requires \emph{unidirectional} coupling:
+coherent coupling $J$ at synthetic phase $\pi/2$ plus dissipative
+coupling $\Gamma_d$ through a common lossy bus gives
+$H_{12}=\ii(J-\Gamma_d)$, $H_{21}=-\ii(J+\Gamma_d)$, one-way at
+$J=\Gamma_d$ (a Hatano--Nelson asymmetry~\cite{HatanoNelson1996}).
+The device shows the mechanism fingerprint on two-length divisor
+data: the det-based onset estimator of the original proposal is
+\emph{provably blind} (a triangular divisor's determinant is a
+product of positive diagonal ratios) while the column sum crosses
+one at $z_c=0.91$\,cm ($J=\Gamma_d=0.25$\,cm$^{-1}$, divisor step
+$0.25$\,cm; the onset is protocol-dependent, $0.486/2J=0.97$\,cm
+in the zero-step limit, and convention-relative in the sense of
+Sec.~\ref{sec:divisor}: it is the $\sigma_{\max}$-normalized
+observable). The normalization is itself measurable here: for the
+triangular device $U^\dagger U$ has diagonal equal to the measured
+column sums of $\hat\Gamma$ and off-diagonal modulus
+$\smash{\sqrt{\hat\Gamma_{21}\hat\Gamma_{22}}}$, so
+$\sigma_{\max}^2(z)$ is the largest eigenvalue of a matrix
+assembled from the measured intensities alone---no phase-resolved
+characterization is needed. This reconstruction is exact at
+triangularity (relative error $6\times10^{-16}$) and, under
+asymmetry imperfection, accurate to the first-order data-driven Weyl estimate
+$\smash{\sqrt{\hat\Gamma_{11}\hat\Gamma_{12}}}$ set by the measured
+residual entry itself (relative $5\times10^{-3}$ at $\eta=3\%$ of
+$J$; script block~[1c]). Det-silent but column-sum-loud identifies
+the cascade device of this pair; det-crossing with negativity, the
+dimer. Detuned
+variants ($\delta=0.5$ and $0.8$\,cm$^{-1}$) read the direction:
+negativity first returns near
+$z^*=\pi/\delta$ (simulated: $6.16$ and $3.81$\,cm at the
+$0.25$\,cm divisor step, against $\pi/\delta=6.28$ and
+$3.93$\,cm---for $z^*$ the offset is exactly half the pair
+spacing: $\pi/\delta-\tau/2=6.158$ and $3.802$\,cm).
+Simulated at $10^4$ detected photons per launch
+with the proposal's error model ($400$ realizations), using
+closed-form, calibration-free estimators for the balanced device
+($\Gamma_d$ from the log-slope of the dark-subtracted
+$\hat\Gamma_{11}$ ladder; $J+\Gamma_d$ from
+$\smash{\sqrt{\hat\Gamma_{21}/\hat\Gamma_{11}}}/z$, in which the
+per-launch calibration cancels exactly): $J$ recovered to
+$+0.5\%\pm1.7\%$ with recovery correlation $0.74$, printed as a
+control---an earlier least-squares model fit returned only its
+initialization on the balanced device, so its apparent precisions
+were echoes of the injected disorder priors, and the script now
+prints that non-recovery ($\mathrm{corr}(\hat\eta,\eta)=0.04$) as
+a permanent control; $\hat z_c$ to $\pm0.040$\,cm at the fixed
+$0.25$\,cm protocol (the protocol convention itself shifts the
+onset by $0.06$\,cm, as stated above, and is part of the quoted
+observable); and $z^*$ to $\pm0.22$\,cm about the finite-step
+offset (simulated center $-0.10$\,cm vs the $-\tau/2=-0.125$\,cm
+anchor; the detuned-device fit that delivers it is itself
+controlled, $\mathrm{corr}(\hat\delta,\delta)=0.86$, printed). The asymmetry
+imperfection $\eta$ (convention: back-coupling $H_{12}=\ii\eta$ at
+fixed $H_{21}=-\ii(J+\Gamma_d)=-0.5\ii$\,cm$^{-1}$) is \emph{not}
+resolved by the intensity fit at the $3\%$ design level---its
+$\hat\Gamma_{12}$ signal peaks at the dark floor at these photon
+numbers---so it is certified rather than fitted, and the certification is
+necessarily \emph{two-channel}, because the negativity channel
+reads only one sign of $\eta$:
+negativity-cleanliness of a $6$\,cm window bounds the real-split
+side $\eta/J$ ($\eta>0$) below
+the ${\approx}13\%$ boundary (computed: $z^*=6.0$\,cm at $13\%$,
+first
+in-window negativity at $14\%$ on the $1\%$ grid near the
+boundary, boundary
+between $13$ and $14\%$; the $z^*$ estimator scans pair base
+points at $0.01$\,cm with $0.25$\,cm spacing, the window-negativity
+scan at $0.1$\,cm---window-aligned conventions
+shift these by up to one grid step), and larger positive
+imperfections are
+measured directly by the re-entry length (computed: $z^*=6.9$\,cm
+at $\eta/J=+10\%$, against $12.7$\,cm---off-chip---at $+3\%$; the
+imperfect $H_{12}\neq0$ device is non-triangular, so the triangular
+bond rule $z^*=\pi/|\delta|$ no longer governs and onset falls below
+it). The
+imaginary-split side ($\eta<0$) is negativity-\emph{silent} at any
+magnitude (the imaginary split keeps the relevant two-time
+determinant $\ge1$ throughout, so the sign flip never triggers;
+corroborated computationally, no in-window negativity at $\eta/J=-14\%$
+through $-100\%$), so window cleanliness alone cannot bound it;
+that side is bounded instead by the Weyl residual of the intensity
+reconstruction: the error in $\sigma_{\max}^{2}$ obeys
+$\lesssim\smash{\sqrt{\hat\Gamma_{11}\hat\Gamma_{12}}}$
+(script block~[1c]; first order in the residual, the $O(\hat\Gamma_{12})$
+correction absorbed by the margin below), which is sign-blind in $\eta$---it reads the
+measured back-coupling intensity $\hat\Gamma_{12}$ directly---and
+bounds the triangularity systematic from the same data. The
+proposal's $3\%$
+per-launch calibration level is thus met with a factor-four margin (heuristically, to first order in the residual)
+against the $13\%$ boundary on the real-split side, and by the
+sign-blind intensity residual on the silent side. The
+imperfection's \emph{sign} selects the
+unfolding direction ($\eta>0$: real split, negativity re-enters at
+finite $z$; $\eta<0$: purely imaginary split, clean past
+$30$\,cm): even the device's error budget is direction physics.
+
+For feasibility we note that at-EP process physics is
+experimentally live (an observation of quantum exceptional points
+of an extended Liouvillian on a superconducting circuit appeared
+in 2025~\cite{QubitEP2025}---non-Markovian EPs, fittingly for this
+program), that Klauck-type arrays reach the required loss rates,
+and that the required asymmetric (Hatano--Nelson) coupling has
+been realized in photonics: Weidemann et
+al.~\cite{Weidemann2020} implemented tunable anisotropic coupling
+in a non-Hermitian photonic mesh lattice---the non-Hermitian skin
+effect experiment---in the same experimental school as the Klauck
+platform. Transferring that coupling asymmetry from the temporal
+mesh to a laser-written waveguide pair via a common lossy bus is a
+design exercise the proposal's error budget estimates---a single
+coupling transfer between demonstrated platforms, itself not yet tested
+end-to-end, rather than a new capability.
+
+%=====================================================================
+\section{Relation to prior work}
+\label{sec:prior}
+
+The Puiseux mathematics of EP splitting is classical~\cite{Kato}
+and its physics literature is active---a direction-dependent
+Puiseux classification via Hessenberg forms of the perturbation,
+with sensing applications~\cite{Mandal2026} (the closest prior
+art to Sec.~\ref{sec:map}'s classification, carrying no
+divisibility or process content), formalism at exceptional
+points~\cite{ChenJu2026}, algebraic characterizations of
+non-Hermitian degeneracies~\cite{SayyadStarkov2026}, and, closest
+in phrase, ``unitary paths of unfolding'' through a third-order EP
+in a solvable model~\cite{BGZ2026}, which exhibits particular
+reality-preserving corridors where we classify the
+finite-frequency family's deformation directions and attach a
+stochastic-mechanism image. The closest
+EP--divisibility contact in the literature is the non-Markovian
+exceptional-point line~\cite{QubitEP2025,NMEPtheory,WongZengLi2026},
+where EPs
+emerge in open-system spectra tied to divisibility transitions
+(most directly in \cite{WongZengLi2026}, whose channel-level EP
+explicitly violates CP-divisibility);
+that line classifies neither unfolding directions nor divisor
+failure mechanisms. On the gravity
+side, Kumar and Marto~\cite{KumarMarto2026} deliberately trade the
+Stelle ghost for an inverted-harmonic-oscillator instability and
+quantize on that side; in the present language theirs is a
+committed choice of the growing side of the same boundary, and the
+two sides are related by the unfolding direction of one Jordan
+block rather than by separate constructions. In the divisibility
+literature, the geometric characterization of stochastic divisors
+by Pimenta~\cite{Pimenta2025} is trace-preserving throughout---unit
+column sums are structural there---so the column-sum-crossing
+mechanism central to this paper and to~\cite{choosing} lies
+outside that framework by construction; our sub-stochastic setting
+is precisely what makes conditional mass creation available. The
+resonant-PU algebraic thread of Fring, Marquette and
+Taira~\cite{FMT2026} is engaged in~\cite{choosing}; the present
+paper adds the divisor-level image their algebra does not address.
+Ilhan and Kovner's two papers~\cite{IK2014,IK2013} supply the
+corner instability and the Jordan-block statement respectively;
+our use of them is scoped in Sec.~\ref{sec:map}. To our knowledge
+no prior work attaches a stochastic divisibility-mechanism image
+(a divisor sign-and-column-sum readout) to the directional
+unfolding of an exceptional point---the directional Puiseux
+classification itself has independent precedent~\cite{Mandal2026},
+and the divisor image is what is new here---and no photonic
+proposal measures
+divisor column sums; we date these claims to the program's public
+notebook in the program's hub repository.
+
+%=====================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+The phase-boundary reading changes what kind of object conformal
+gravity is. (We use ``phase boundary'' in the exceptional-point
+sense---dynamical regimes separated by a spectral
+degeneracy---not in the Landau sense of an order parameter; the
+analogy is structural, and we flag it as such.) On this map the pure theory occupies a measure-zero
+set: every physical deformation, every regulator, and every
+numerical representation sits on the growing, oscillatory, or (for
+net-damping representations) decaying side, and the
+side is decided by a phase. The theory's notorious fragility at the
+equal-frequency point---polynomial growth flipping to exponential
+under machine-epsilon perturbations, recorded
+in~\cite{choosing}---is not a numerical nuisance but the boundary
+itself, and the classification converts anecdotes into a dictionary
+(Table~\ref{tab:dictionary}) with a per-row observable.
+
+The divisor theorems give the boundary a laboratory-facing
+signature and settle an internal question. Mass-creation-pure
+indivisibility---the mechanism that the conformal-gravity paper found
+at the conformal cell---is now known to be a property of the minimal Jordan cell
+exclusively: depth-three \emph{Jordan} cascades are
+negativity-bearing as a matter of Bessel-zero arithmetic, with
+exactly alternating generator signs (a reducible three-level
+cascade, e.g.\ a $k=2$ cell plus a spectator level, can of course
+remain pure---the theorem is about the irreducible block). The universality is striking: the sign map of a
+deep Jordan cascade's divisor knows the depth and the step ratio,
+and
+nothing else about the physics. We do not currently know a
+physical principle that singles out the Rayleigh sums here beyond
+the calculation itself; the appearance of Fourier--Bessel band
+edges $(j_{0,n}/j_{0,1})^2$ in a divisibility question seems to us
+genuinely new, and possibly a shadow of something better.
+
+In the program's arc, this paper is the second of the pair the
+threads audit projected: the conformal-gravity paper proved what fails \emph{at} the
+conformal point; this paper proves what the neighborhood looks
+like and how to measure which neighbor nature chose---if a
+fourth-order sector is physically realized at all (the depth-two negativity is a
+theorem for the formal Jordan block regardless), which remains the program's
+standing conditional. The natural continuations are the
+finite-time and dressed-propagator questions (the sheet
+classification of ghosts versus unstable particles admits a
+process-level image we leave to later work), and the boundary
+conditions of the de Sitter completion, where the same Jordan
+degeneration prices Maldacena's
+ghost-removal~\cite{Maldacena2011}; both are planned
+as later installments of the program.
+
+\paragraph{Code availability.} All numerical claims are
+reproducible from the public scripts in the program
+repository---except the Merlin-row loop numbers of
+Sec.~\ref{sec:dictionary}, which are analytic computations whose
+arithmetic is stated in the revised companion~\cite{choosing}:
+\texttt{scripts/p6\_unfolding\_sweep.py} (Sec.~\ref{sec:map}),
+\texttt{scripts/p6\_divisor\_gate.py}, \texttt{scripts/p6\_divisor\_theorem.py},
+\texttt{scripts/p6\_divisor\_dxd.py}, \texttt{scripts/p6\_cm\_signs.py},
+\texttt{scripts/p6\_m2\_channel.py}
+(Sec.~\ref{sec:divisor}), and \texttt{scripts/p6\_d4\_device.py}
+(Sec.~\ref{sec:photonic}), each printing its controls inline.
+
+\begin{thebibliography}{99}\small
+
+\bibitem{indivisible}
+J.~Torkelson,
+\emph{Indivisible stochastic processes for non-Hermitian and
+higher-derivative quantum systems: detailed balance, broken $\PT$
+symmetry, and the explosion of ghosts},
+repository \url{https://github.com/embeddetech/p01-indivisible-ghosts}
+(2026).
+
+\bibitem{instantaneous}
+J.~Torkelson,
+\emph{Ghost vacuum decay as a stochastic process: instantaneous
+states, the boost-orbit measure, and the foliation that ghosts make
+visible}, repository
+\url{https://github.com/embeddetech/p03-instantaneous-ghosts} (2026).
+
+\bibitem{conditioned}
+J.~Torkelson,
+\emph{The price of a post-selected signal: a sharp
+survival--distinguishability trade-off, saturated by broken-$\PT$
+dynamics}, repository
+\url{https://github.com/embeddetech/p04-conditioned-ghosts} (2026).
+
+\bibitem{choosing}
+J.~Torkelson,
+\emph{Conformal gravity must choose: exceptional-point kinematics,
+vacuum decay, and the sample space of Weyl gravity}, repository
+\url{https://github.com/embeddetech/p05-choosing-ghosts} (2026).
+
+\bibitem{measurable}
+J.~Torkelson,
+\emph{Experimental proposal: divisibility onset, generator floor,
+and the backflow--divisibility dissociation in a passive $\PT$
+photonic coupler}, paper~2 of this program, repository
+\url{https://github.com/embeddetech/p02-measurable-ghosts} (2026).
+
+\bibitem{IK2014}
+I.~B.~Ilhan and A.~Kovner,
+\emph{Conformal gravity redux: Ghost-turned tachyon},
+Phys.\ Rev.\ D \textbf{89}, 104015 (2014), arXiv:1403.4664.
+
+\bibitem{IK2013}
+I.~B.~Ilhan and A.~Kovner,
+\emph{Some comments on ghosts and unitarity: The Pais--Uhlenbeck
+oscillator revisited},
+Phys.\ Rev.\ D \textbf{88}, 044045 (2013), arXiv:1301.4879.
+
+\bibitem{Kato}
+T.~Kato,
+\emph{Perturbation Theory for Linear Operators},
+2nd ed., Springer (1976).
+
+\bibitem{KreinTheory}
+M.~G.~Krein,
+\emph{A generalization of certain investigations of A.~M.~Liapunov
+on linear differential equations with periodic coefficients},
+Dokl.\ Akad.\ Nauk SSSR \textbf{73}, 445 (1950);
+R.~S.~MacKay,
+\emph{Stability of equilibria of Hamiltonian systems},
+in \emph{Nonlinear Phenomena and Chaos}, ed.\ S.~Sarkar,
+Adam Hilger, Bristol (1986), pp.~254--270.
+
+\bibitem{Watson}
+G.~N.~Watson,
+\emph{A Treatise on the Theory of Bessel Functions},
+2nd ed., Cambridge University Press (1944).
+
+\bibitem{Smilga2014}
+A.~V.~Smilga,
+\emph{Exceptional points of infinite order giving a continuous
+spectrum},
+Int.\ J.\ Theor.\ Phys.\ \textbf{54}, 3900 (2015), arXiv:1409.8450.
+
+\bibitem{DonoghueMenezes}
+J.~F.~Donoghue and G.~Menezes,
+\emph{Unitarity, stability, and loops of unstable ghosts},
+Phys.\ Rev.\ D \textbf{100}, 105006 (2019), arXiv:1908.02416;
+\emph{The arrow of causality and quantum gravity},
+Phys.\ Rev.\ Lett.\ \textbf{123}, 171601 (2019), arXiv:1908.04170
+(the ``Merlin'' coinage).
+
+\bibitem{Barandes}
+J.~A.~Barandes,
+\emph{The stochastic-quantum correspondence},
+Philosophy of Physics \textbf{3}(1), 8 (2025),
+doi:10.31389/pop.186,
+arXiv:2302.10778;
+\emph{The stochastic-quantum theorem}, arXiv:2309.03085.
+
+\bibitem{Stelle1977}
+K.~S.~Stelle,
+\emph{Renormalization of higher-derivative quantum gravity},
+Phys.\ Rev.\ D \textbf{16}, 953 (1977).
+
+\bibitem{Maldacena2011}
+J.~Maldacena,
+\emph{Einstein gravity from conformal gravity},
+arXiv:1105.5632 (2011).
+
+\bibitem{NMEPtheory}
+J.-D.~Lin, P.-C.~Kuo, N.~Lambert, A.~Miranowicz, F.~Nori, and
+Y.-N.~Chen,
+\emph{Non-Markovian quantum exceptional points},
+Nat.\ Commun.\ \textbf{16}, 1289 (2025), arXiv:2406.18362.
+
+\bibitem{Klauck2019}
+F.~Klauck \emph{et al.},
+\emph{Observation of $\PT$-symmetric quantum interference},
+Nat.\ Photonics \textbf{13}, 883 (2019), arXiv:1904.08135.
+
+\bibitem{HatanoNelson1996}
+N.~Hatano and D.~R.~Nelson,
+\emph{Localization transitions in non-Hermitian quantum mechanics},
+Phys.\ Rev.\ Lett.\ \textbf{77}, 570 (1996),
+arXiv:cond-mat/9603165.
+
+\bibitem{Weidemann2020}
+S.~Weidemann, M.~Kremer, T.~Helbig, T.~Hofmann, A.~Stegmaier,
+M.~Greiter, R.~Thomale, and A.~Szameit,
+\emph{Topological funneling of light},
+Science \textbf{368}, 311 (2020).
+
+\bibitem{QubitEP2025}
+H.-L.~Zhang, P.-R.~Han, F.~Wu, W.~Ning, Z.-B.~Yang, and
+S.-B.~Zheng,
+\emph{Experimental observation of non-Markovian quantum exceptional
+points},
+Phys.\ Rev.\ Lett.\ \textbf{135}, 230203 (2025), arXiv:2503.06977.
+
+\bibitem{ChenJu2026}
+W.-M.~Chen and C.-Y.~Ju,
+\emph{Non-Hermitian Rayleigh--Schr\"odinger-like perturbation
+theory at exceptional point}, arXiv:2606.31279 (2026).
+
+\bibitem{SayyadStarkov2026}
+S.~Sayyad and G.~A.~Starkov,
+\emph{Characterizing all non-Hermitian degeneracies using algebraic
+approaches: Defectiveness and asymptotic behavior},
+arXiv:2604.16140 (2026).
+
+\bibitem{BGZ2026}
+B.~Bagchi, A.~Ghosh, and M.~Znojil,
+\emph{Triple exceptional point with unitary paths of unfolding in a
+three-site fermionic Swanson-like model},
+Ann.\ Phys.\ (N.Y.) \textbf{492}, 170569 (2026), arXiv:2606.03789.
+
+\bibitem{Mandal2026}
+I.~Mandal,
+\emph{Puiseux series about exceptional singularities dictated by
+symmetry-allowed Hessenberg forms of perturbation matrices},
+arXiv:2603.25603 (2026).
+
+\bibitem{KumarMarto2026}
+K.~Sravan Kumar and J.~Marto,
+\emph{Quantum (quadratic) gravity: replacing the massive tensor
+ghost with an inverted harmonic oscillator-like instability},
+arXiv:2603.07150 (2026).
+
+\bibitem{Pimenta2025}
+L.~S.~Pimenta,
+\emph{Divisible and indivisible Stochastic-Quantum dynamics},
+arXiv:2505.08785 (2025).
+
+\bibitem{WongZengLi2026}
+W.~C.~Wong, B.~Zeng, and J.~Li,
+\emph{Non-Markovian exceptional points by interpolating quantum
+channels},
+npj Quantum Inf.\ \textbf{12}, 63 (2026), arXiv:2507.16049.
+
+\bibitem{FMT2026}
+A.~Fring, I.~Marquette, and T.~Taira,
+\emph{Spectrum-generating algebra and intertwiners of the resonant
+Pais--Uhlenbeck oscillator}, arXiv:2601.20752 (2026).
+
+\end{thebibliography}
+
+\end{document}
